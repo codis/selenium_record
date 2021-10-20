@@ -1,10 +1,6 @@
 import time
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import WebDriverException
 
 class Browser:
 	driver = None
@@ -14,27 +10,34 @@ class Browser:
 		self.driver.maximize_window()
 
 	def open_video(self, search):
-		self.driver.get("https://www.youtube.com/results?search_query=" + str(search))
-		# Agree for cookies disclaimer
-		agree = self.driver.find_elements_by_xpath("//*[contains(text(), 'I Agree')]")[0]
-		if agree.is_enabled:
-			agree.click()
-		else:
-			print("Unable to click the \"I Agree\" button from disclaimer.")
-			return -1
+		
+		try:
+			self.driver.get("https://www.youtube.com/results?search_query=" + str(search))
 
-		fail = True
-		# Play first video from search query
-		videos = self.driver.find_elements_by_xpath('//*[@id="video-title"]')
-		for video in videos:
-			# Sometimes the first result is not clickable
-			if video.is_enabled() and video.is_displayed():
-				video.click()
-				fail = False
-				break
+			# Agree for cookies disclaimer
+			agree = self.driver.find_elements_by_xpath("//*[contains(text(), 'I Agree')]")[0]
+			if agree.is_enabled:
+				agree.click()
+			else:
+				print("Unable to click the \"I Agree\" button from disclaimer.")
+				return -1
 
-		if fail:
-			print("Could not find any video to open.")
+			fail = True
+			# Play first video from search query
+			videos = self.driver.find_elements_by_xpath('//*[@id="video-title"]')
+			for video in videos:
+				# Sometimes the first result is not clickable
+				if video.is_enabled() and video.is_displayed():
+					video.click()
+					fail = False
+					break
+
+			if fail:
+				print("Could not find any video to open.")
+				return -1
+
+		except WebDriverException:
+			print("There is no internet connection.")
 			return -1
 
 		return 1

@@ -99,6 +99,7 @@ class Audio:
 		recorded_frames = []
 		self.stream.start_stream()
 		try:
+			print("Audio recording.")
 			for i in range(0, int(int(self.dev_info["defaultSampleRate"]) / self.frames * record_time)):
 				recorded_frames.append(self.stream.read(self.frames, exception_on_overflow = False))
 			

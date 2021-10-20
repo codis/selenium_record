@@ -37,6 +37,7 @@ class Screen():
 		self.video_out.release()
 
 	def record(self, record_time):
+		print("Screen recording.")
 		t1 = time.time()
 		t2 = time.time()
 		# To fill the short delay between seconds
