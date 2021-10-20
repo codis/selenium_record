@@ -26,7 +26,6 @@ class Audio:
 		for i in range(0, self.audio.get_device_count()):
 			info = self.audio.get_device_info_by_index(i)
 			hostAPI = self.audio.get_host_api_info_by_index(info["hostApi"])["name"]
-			print("Dev id: " + str(info["index"]), (info["name"], hostAPI))
 			devs.append((info["index"], info["name"], hostAPI))
 
 		return devs

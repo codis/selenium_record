@@ -24,23 +24,31 @@ def main():
 	if err < 0:
 		print("Failed to open video. Exiting...")
 		exit()
+	print("Video is now online.")
 	record_time = 10
 
 	audio = Audio(DEFAULT_FRAMES)
-	devs = audio.get_device()
+	dev_list = audio.get_device()
+	print("List of devices")
+	print(dev_list)
 
+	# Ideally we would select from the list of devs a device
+	# since this is not the point, I will just use the default dev
+	dev_id = 0
 	mode = {"input": True, "output": False}
 	err = audio.set_device(0, mode)
 	if err < 0:
 		print("Failed to setup audio device. Exiting...")
 		exit()
+	print("Audio Device %d was succesfully setup." % dev_id)
 	
 	err = audio.open("out.wav")
 	if err < 0:
 		print("Failed to open audio stream. Exiting...")
 		exit()
+	print("Audio stream is open.")
 
-	print("Audio setup was succesfull")
+	print("Audio setup was succesfull.")
 
 	fps = 2
 	timing = 0.5
@@ -50,8 +58,9 @@ def main():
 		print("Failed to open screen interface. Exiting...")
 		audio.close()
 		exit()
+	print("Screen interface is open.")
 
-	print("Screen setup was succesfull")
+	print("Screen setup was succesfull.")
 
 	threads = [
     	Thread(target = audio.record, args=(record_time,)),
@@ -63,6 +72,9 @@ def main():
 
 	for thread in threads:
 		thread.join()
+
+	print("Audio recording was succesfull.")
+	print("Screen recording was succesfull.")
 
 	audio.close()
 	screen.close()
