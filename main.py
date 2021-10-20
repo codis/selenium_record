@@ -1,20 +1,11 @@
-import time
-
-import os
-
-#import math
 import numpy as np
 from browser import Browser
-from record import Record, highest_fps_possible
-from scipy.io.wavfile import read
-
-#options = webdriver.ChromeOptions()
-#options.addrguments("--incognito");
-#options.AddUserProfilePreference("profile.default_content_setting_values.cookies", 2)
+from screen import Screen, highest_fps_possible
+from audio import Audio
 
 VIDEO = "Rachmaninoff - Piano Concerto No.2, I. Moderato"
 SCREEN_SIZE = (1920, 1080)
-
+DEFAULT_FRAMES = 512
 
 def dbs_average(file):
 	samprate, wavdata = read(file)
@@ -23,19 +14,30 @@ def dbs_average(file):
 	print(dbs)
 
 def main():
-	(fps, timing) = highest_fps_possible()
+	#(fps, timing) = highest_fps_possible()
 	# for (1920, 1080) its 2 fps
-	print(fps, timing)
+	#print(fps, timing)
 
 	browser = Browser()
 	browser.open_video(VIDEO)
-	#time.sleep(2)
-	
-	record = Record()
-	record.test_screen(30, SCREEN_SIZE, fps, timing, "output.avi")
+
+	"""
+	audio = Audio(DEFAULT_FRAMES)
+	devs = audio.get_device()
+	print(devs)
+	mode = {"input": True, "output": False}
+	err = audio.set_device(0, mode)
+	err = audio.open("out.wav")
+	audio.record(10)
+	"""
+
+	fps = 2
+	timing = 0.5
+	screen = Screen(SCREEN_SIZE, fps, timing)
+	screen.open("output.avi")
+	screen.record(10)
 
 	browser.close()
-	#record_screen()
 
 main()
 #dbs_average("out.wav")
