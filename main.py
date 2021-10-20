@@ -1,7 +1,8 @@
-import numpy as np
+from threading import Thread
 from browser import Browser
 from screen import Screen, highest_fps_possible
 from audio import Audio
+import numpy as np
 
 VIDEO = "Rachmaninoff - Piano Concerto No.2, I. Moderato"
 SCREEN_SIZE = (1920, 1080)
@@ -20,22 +21,31 @@ def main():
 
 	browser = Browser()
 	browser.open_video(VIDEO)
+	record_time = 120
 
-	"""
 	audio = Audio(DEFAULT_FRAMES)
 	devs = audio.get_device()
-	print(devs)
 	mode = {"input": True, "output": False}
 	err = audio.set_device(0, mode)
 	err = audio.open("out.wav")
-	audio.record(10)
-	"""
+	print("Audio setup was succesfull")
 
 	fps = 2
 	timing = 0.5
 	screen = Screen(SCREEN_SIZE, fps, timing)
 	screen.open("output.avi")
-	screen.record(10)
+	print("Screen setup was succesfull")
+
+	threads = [
+    	Thread(target = audio.record, args=(record_time,)),
+    	Thread(target = screen.record, args=(record_time,))
+	]
+
+	for thread in threads:
+		thread.start()
+
+	for thread in threads:
+		thread.join()
 
 	browser.close()
 
