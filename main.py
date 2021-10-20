@@ -20,20 +20,37 @@ def main():
 	#print(fps, timing)
 
 	browser = Browser()
-	browser.open_video(VIDEO)
-	record_time = 120
+	err = browser.open_video(VIDEO)
+	if err < 0:
+		print("Failed to open video. Exiting...")
+		exit()
+	record_time = 10
 
 	audio = Audio(DEFAULT_FRAMES)
 	devs = audio.get_device()
+
 	mode = {"input": True, "output": False}
 	err = audio.set_device(0, mode)
+	if err < 0:
+		print("Failed to setup audio device. Exiting...")
+		exit()
+	
 	err = audio.open("out.wav")
+	if err < 0:
+		print("Failed to open audio stream. Exiting...")
+		exit()
+
 	print("Audio setup was succesfull")
 
 	fps = 2
 	timing = 0.5
 	screen = Screen(SCREEN_SIZE, fps, timing)
 	screen.open("output.avi")
+	if err < 0:
+		print("Failed to open screen interface. Exiting...")
+		audio.close()
+		exit()
+
 	print("Screen setup was succesfull")
 
 	threads = [
@@ -47,6 +64,8 @@ def main():
 	for thread in threads:
 		thread.join()
 
+	audio.close()
+	screen.close()
 	browser.close()
 
 main()

@@ -28,6 +28,13 @@ class Screen():
 	def open(self, file):
 		fourcc = cv2.VideoWriter_fourcc(*"XVID")
 		self.video_out = cv2.VideoWriter(file, fourcc, self.fps, (self.screen_size))
+		if not self.video_out.isOpened():
+			return -1
+
+		return 1
+
+	def close(self):
+		self.video_out.release()
 
 	def record(self, record_time):
 		t1 = time.time()
@@ -35,7 +42,6 @@ class Screen():
 		# To fill the short delay between seconds
 		delay = (1000 - int((1 / self.fps + self.timing) * 1000))
 		while (t2 - t1) < record_time:
-			#print(t2 - t1, delay)
 			img = pyautogui.screenshot(region=(0, 0, self.screen_size[0], self.screen_size[1]))
 			frame = np.array(img)
 			frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -44,8 +50,6 @@ class Screen():
 			#Its in ms
 			#cv2.waitKey(delay)
 			t2 = time.time()
-
-		self.video_out.release()
 
 	def check_fps_timing(self):
 		FRAMES = 10
