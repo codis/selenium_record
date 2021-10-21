@@ -1,0 +1,101 @@
+API Documentation
+	https://people.csail.mit.edu/hubert/pyaudio/docs/#id1
+	https://docs.python.org/3/library/wave.html#module-wave
+	https://docs.opencv.org/3.4.15/dd/d9e/classcv_1_1VideoWriter.html
+	https://pyautogui.readthedocs.io/en/latest/screenshot.html
+	https://www.selenium.dev/documentation/webdriver/
+
+Ubuntu 20.04.2 LTS
+Linux kernel 5.4.0-81-generic
+
+	Install
+conda install -c conda-forge selenium
+conda install -c anaconda opencv
+conda install -c conda-forge pyautogui
+conda install -c conda-forge pyaudio
+conda install -c conda-forge scipy
+sudo apt-get install scrot
+
+Chrome driver
+update chrome to newest version (Version 94.0.4606.81)
+download Chrome WebDriver for this version
+export PATH="$PATH:/path/to/chromedriver" <- so python can find it when running
+	export PATH="$PATH:/home/codi/drivers"
+
+
+I decided to make a class for each different running component. Having them in separate classes
+makes it easier for error handling when initialising and setting up. This setup also makes it
+easier to extend each class and their functionality if needed. Initially I had Screen and Audio
+put in the same class Record, in a more monolitic style, but this proved to be a burden when 
+doing sanity checks and when closing. I also hoped that monolitic class would be helpfull when
+trying to record both audio and video at the same time, but it got messy quickly. Thats when I 
+went with the Singe-responsibility principle route and separated them.
+
+Screen and Audio were also designed as if they were to become APIs, especially true for Audio,
+which is similar to a device API. This decision came about from the need to be able to open
+and close different parts whenever needed. This lets us to try multiple times different parts
+of the program, such as an IO device being occupied when trying to access it. Also it gives the
+flexibility to change between Synchronous and Asynchronous operations.
+
+Whats missing and I didn't get to it was adding internal states of the APIs, for example:
+was the Audio device set-up yet? This is important because if you would try to record now
+before actually setting it up, you would get an unhandled exception.
+
+In order to simultaneously record both the screen and the audio we would have the following choices:
+	Have them polling and use 2 threads, one for audio and one for screen
+	Have them Asynchronous and make use of event management.
+I chose the first choice because it was easier and when testing I didn't notice any missed parts from
+either of the recordings.
+Otherwise I think Async is the preffered way when using multiple IO operations on the same processor.
+
+I am using a daemon in order to constantly check the internet connection, because there is no
+reason to continue running the program if we know we don't have anything to record. Ideally
+the daemon would also close currently running threads for recording, however this required to make
+significant changes which were possible, but time did not permit. The idea would've been to add
+some event triggers to the current threads which would be constantly checked.
+
+For error handling I made use of the API documentation for each library used. Checked which exceptions
+they raised, how to use their statuses and how to handle error scenarios.
+
+
+
+Besides the following 3 problems, I did not have any time consuming or hard bugs. I concentrated on
+understanding how to use the APIs and have a functioning prototype ASAP. After that I made a few design
+decision such as having multiple classes (mentioned above), went back on some decissions, tried new ones,
+such as splitting the Record class in Audio and Screen. After that made sure every error scenario was
+handled .
+
+
+Big problem 1: Google cookie disclaimer
+
+driver.find_elements_by_xpath("//*[contains(text(), 'I Agree')]")[0].click()
+
+another method that i tried :
+	driver.find_element_by_xpath('/html/body/ytd-app/ytd-consent-bump-v2-lightbox/tp-yt-paper-dialog/div[1]/div[1]/div[4]/div[1]/ytd-button-renderer')
+
+	after div[4] the path was not good so instead of wasting more time to get to the button, I tried searching for the text directly
+
+Also I would mention here that understanding the documentation for selenium was pretty challenging
+and I am quite sure that I did not handle every scenario properly, but close enough to have proper usage.
+
+Big problem 2: Fast forward screen recording
+
+I realised that my screen recording were "fast-forwarding" because of how many frames it actually
+got to process in the span of a second. You have the option to select how many FPS you can fit in
+your avi file while writeing. The time for processing per frame is impacted by the dimension
+of the region you decide to screenshot (for me was my resolution, 1920:1080), which could be changed
+by either using a different resolution or by screenshoting only the video region of the screen.
+Because of this variability, I decided to make a function which will try to process the same scenario
+and record how much time it took for N frames and then see how many fps I could fill with this setup.
+
+Although this approach worked, because of my high resolution, I could only get 2 fps and 
+because that function was running alone, without the Browser active and the Audio recording it actually 
+provided me not so accurate results. Lesson here was to always make sure you are testing in the real environment
+and not a small make-up one. 
+
+I abandoned this idea after because it was not the focus and just used the maximum of 2 fps to get the video
+recording as close as possible to 2 minutes (I have 1:30 now).
+
+Big problem 3: Audio devices
+
+This one we already talked about during our last meeting.
