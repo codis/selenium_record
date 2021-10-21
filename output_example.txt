@@ -1,0 +1,39 @@
+Internet daemon started.
+ALSA lib conf.c:3723:(snd_config_hooks_call) Cannot open shared library libasound_module_conf_pulse.so (libasound_module_conf_pulse.so: libasound_module_conf_pulse.so: cannot open shared object file: No such file or directory)
+ALSA lib control.c:1379:(snd_ctl_open_noupdate) Invalid CTL hw:0
+ALSA lib pcm_dsnoop.c:642:(snd_pcm_dsnoop_open) unable to open slave
+ALSA lib pcm_dmix.c:1090:(snd_pcm_dmix_open) unable to open slave
+ALSA lib pcm.c:2660:(snd_pcm_open_noupdate) Unknown PCM cards.pcm.rear
+ALSA lib pcm.c:2660:(snd_pcm_open_noupdate) Unknown PCM cards.pcm.center_lfe
+ALSA lib pcm.c:2660:(snd_pcm_open_noupdate) Unknown PCM cards.pcm.side
+ALSA lib dlmisc.c:340:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_pcm_jack.so (libasound_module_pcm_jack.so: libasound_module_pcm_jack.so: cannot open shared object file: No such file or directory)
+ALSA lib dlmisc.c:340:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_pcm_jack.so (libasound_module_pcm_jack.so: libasound_module_pcm_jack.so: cannot open shared object file: No such file or directory)
+ALSA lib dlmisc.c:340:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_pcm_oss.so (libasound_module_pcm_oss.so: libasound_module_pcm_oss.so: cannot open shared object file: No such file or directory)
+ALSA lib dlmisc.c:340:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_pcm_oss.so (libasound_module_pcm_oss.so: libasound_module_pcm_oss.so: cannot open shared object file: No such file or directory)
+ALSA lib dlmisc.c:340:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_pcm_pulse.so (libasound_module_pcm_pulse.so: libasound_module_pcm_pulse.so: cannot open shared object file: No such file or directory)
+ALSA lib dlmisc.c:340:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_pcm_pulse.so (libasound_module_pcm_pulse.so: libasound_module_pcm_pulse.so: cannot open shared object file: No such file or directory)
+ALSA lib dlmisc.c:340:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_pcm_upmix.so (libasound_module_pcm_upmix.so: libasound_module_pcm_upmix.so: cannot open shared object file: No such file or directory)
+ALSA lib dlmisc.c:340:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_pcm_upmix.so (libasound_module_pcm_upmix.so: libasound_module_pcm_upmix.so: cannot open shared object file: No such file or directory)
+ALSA lib dlmisc.c:340:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_pcm_vdownmix.so (libasound_module_pcm_vdownmix.so: libasound_module_pcm_vdownmix.so: cannot open shared object file: No such file or directory)
+ALSA lib dlmisc.c:340:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_pcm_vdownmix.so (libasound_module_pcm_vdownmix.so: libasound_module_pcm_vdownmix.so: cannot open shared object file: No such file or directory)
+ALSA lib dlmisc.c:340:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_pcm_usb_stream.so (libasound_module_pcm_usb_stream.so: libasound_module_pcm_usb_stream.so: cannot open shared object file: No such file or directory)
+ALSA lib dlmisc.c:340:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_pcm_usb_stream.so (libasound_module_pcm_usb_stream.so: libasound_module_pcm_usb_stream.so: cannot open shared object file: No such file or directory)
+ALSA lib pcm_dsnoop.c:642:(snd_pcm_dsnoop_open) unable to open slave
+ALSA lib pcm_dmix.c:1090:(snd_pcm_dmix_open) unable to open slave
+ALSA lib pcm_dmix.c:1090:(snd_pcm_dmix_open) unable to open slave
+List of devices
+[(0, 'HDA Intel PCH: ALC283 Analog (hw:1,0)', 'ALSA'), (1, 'hdmi', 'ALSA')]
+{'input': True, 'output': False}
+Audio Device 0 was succesfully setup.
+Audio stream is open.
+Audio setup was succesfull.
+Screen interface is open.
+Screen setup was succesfull.
+Video is now online.
+Audio recording.
+Screen recording.
+Audio recording was succesfull.
+Screen recording was succesfull.
+main.py:21: RuntimeWarning: invalid value encountered in sqrt
+  dbs = [20 *np.log10(np.sqrt(np.mean(chunk))) for chunk in chunks]
+Average db level is -39.681615

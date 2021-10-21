@@ -1,6 +1,7 @@
 from browser import Browser
 from screen import Screen, highest_fps_possible
 from audio import Audio
+from scipy.io import wavfile
 import urllib.request
 import numpy as np
 import threading
@@ -13,17 +14,24 @@ DEFAULT_FRAMES = 512
 audio_file = "out.wav"
 screen_file = "output.avi"
 
-def dbs_average(file):
-	samprate, wavdata = read(file)
-	chunks = np.array_split(wavdata, 5)
-	dbs = [20*np.log10( np.sqrt(np.mean(chunk**2)) ) for chunk in chunks]
-	print(dbs)
+def dbs_average(file, record_time):
+	samprate, wavdata = wavfile.read(file)
+	wavdata = wavdata / (2.**15)
+	chunks = np.array_split(wavdata, record_time)
+	dbs = [20 *np.log10(np.sqrt(np.mean(chunk))) for chunk in chunks]
+
+	new_dbs = []
+	for db in dbs:
+		if np.isnan(db):
+			continue
+		new_dbs.append(db)
+
+	print("Average db level is %f" % np.mean(new_dbs))
 
 def clean(audio, screen, browser):
 	audio.close()
 	screen.close()
 	browser.close()
-
 
 def check_net():
 	while True:
@@ -89,7 +97,7 @@ def main():
 		exit()
 	print("Video is now online.")
 
-	record_time = 10
+	record_time = 120
 	threads = [
     	threading.Thread(target=audio.record, args=(record_time,)),
     	threading.Thread(target=screen.record, args=(record_time,))
@@ -106,6 +114,6 @@ def main():
 
 	clean(audio, screen, browser)
 
-	dbs_average(audio_file)	
+	dbs_average(audio_file, record_time)	
 
 main()
