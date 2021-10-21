@@ -42,7 +42,7 @@ was the Audio device set-up yet? This is important because if you would try to r
 before actually setting it up, you would get an unhandled exception.
 
 In order to simultaneously record both the screen and the audio we would have the following choices:
-	Have them polling and use 2 threads, one for audio and one for screen
+	Have them Synchronous and use 2 threads, one for audio and one for screen
 	Have them Asynchronous and make use of event management.
 I chose the first choice because it was easier and when testing I didn't notice any missed parts from
 either of the recordings.
